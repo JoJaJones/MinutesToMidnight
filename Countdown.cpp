@@ -35,6 +35,14 @@ Countdown::Countdown(std::string eventName, long targetTime, long creationTime) 
     this->targetTime = localtime_r(&targetTime, &temp[1]);
 }
 
+Countdown::Countdown(Countdown &aCountdown) {
+    this->eventName = aCountdown.eventName;
+    this->targetTime = aCountdown.targetTime;
+    this->creationTime = aCountdown.creationTime;
+}
+
+Countdown::Countdown() {}
+
 /**********************************************************************************
  * Function to save the data stored in the countdown object to a target save file
  **********************************************************************************/

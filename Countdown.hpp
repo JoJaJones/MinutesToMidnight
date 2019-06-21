@@ -23,6 +23,8 @@ private:
 public:
     Countdown(std::string eventName, struct tm* targetTime);
     Countdown(std::string eventName, long targetTime, long creationTime);
+    Countdown(Countdown &aCountdown);
+    Countdown();
     void saveData();
     struct tm* getTargetTime();
     struct tm* getCreationTime();
