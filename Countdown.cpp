@@ -7,6 +7,8 @@
 
 #include "Countdown.hpp"
 
+using std::ios;
+
 /**********************************************************************************
  * Constructor for initial creation of a countdown object
  *
@@ -17,9 +19,8 @@ Countdown::Countdown(std::string eventName, struct tm* targetTime) {
     this->eventName = eventName;
     this->targetTime = targetTime;
 
-    int temp = time(NULL); //get current time and store in temp
-    creationTime = localtime(&temp); //convert time to a tm* and store in creation time
-
+    time_t now = time(NULL); //get current time and store in temp
+    creationTime = localtime_r(&now, &temp[0]); //convert time to a tm* and store in creation time
 }
 
 /**********************************************************************************
@@ -30,19 +31,21 @@ Countdown::Countdown(std::string eventName, struct tm* targetTime) {
  **********************************************************************************/
 Countdown::Countdown(std::string eventName, long targetTime, long creationTime) {
     this->eventName = eventName;
-    this->creationTime = localtime(creationTime);
-    this->targetTime = localtime(targetTime);
+    this->creationTime = localtime_r(&creationTime, &temp[0]);
+    this->targetTime = localtime_r(&targetTime, &temp[1]);
 }
 
 /**********************************************************************************
  * Function to save the data stored in the countdown object to a target save file
  **********************************************************************************/
 void Countdown::saveData(){
+
     std::ofstream outFile;
-    outFile.open("data.txt", ios::app); //open file in append mode
+    outFile.open("data.txt", ios::app); //open file in append mod
 
     //add data for the countdown to the end of the data file
     outFile << mktime(creationTime) << "|" << eventName << "|" << mktime(targetTime) << std::endl;
+    outFile.close();
     //TODO(set the save code to reinitialize save file before saving all the countdowns or
     //     to save the data only if the data does not already exist)
 }

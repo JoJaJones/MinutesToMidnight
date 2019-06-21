@@ -11,14 +11,18 @@
 #include <string>
 #include <ctime>
 #include <fstream>
+#include <time.h>
+
 
 class Countdown {
 private:
-    struct tm* creationTime, targetTime;
+    struct tm* creationTime;
+    struct tm* targetTime;
+    struct tm temp[2];
     std::string eventName;
 public:
     Countdown(std::string eventName, struct tm* targetTime);
-    Countdown(std::string eventName, int targetTime, int creationTime);
+    Countdown(std::string eventName, long targetTime, long creationTime);
     void saveData();
     struct tm* getTargetTime();
     struct tm* getCreationTime();
