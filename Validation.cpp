@@ -37,6 +37,34 @@ int getInt(int min, int max)
 	return num;
 }
 
+int getInt(std::string stringToProcess) //added this to process strings from the data file
+{
+	int num = -1;
+	std::string str = "";
+	while (!isInt(str) || !isWithinRange(num, min, max) || str.empty())
+	{
+		str = "";
+		num = 0;
+	    	
+		str = stringToProcess;
+		if (isInt(str))
+		{
+			for (unsigned i = 0; i < str.length(); i++)
+			{
+				num = num * 10 + (str[i] - 48);    // 0 = 48 in ascii
+			}
+		}
+		
+		if (!isInt(str) || !isWithinRange(num, min, max) || str.empty())
+		{
+			std::cout << "Please input a number between " << min
+				<< " and " << max << ".\n";
+		}
+	}
+
+	return num;
+}
+
 bool isInt(std::string str)
 {
 	for (unsigned i = 0; i < str.length(); i++)
@@ -70,17 +98,26 @@ std::string noSpace(std::string str)
 	return newStr;
 }
 
-std::string splitString(std::string str)
+std::string[] splitString(std::string str) //hey Jason updated this because I'm not sure how you'd process subsequent data points as it was written
 {
-	std::string newStr = "";
-
-	for (unsigned i = 0; i < str.length(); i++)
+	std::string newStr[4] = {"","","",""};
+	
+	int delimCount = 0;
+	int count = 0
+	while(delimCount < 3)
 	{
-		if (str[i] != '|')
-			newStr += str[i];
-
+		if (str[count] != '|') 
+		{
+			newStr[delimCount] += str[count];
+		}
 		else
-			newStr += " ";
+		{
+			delimCount++;
+		}
+		count++;
 	}
+	
+	newStr[delimCount] = str[str.length-1]; //store enum val
+
 	return newStr;
 }
