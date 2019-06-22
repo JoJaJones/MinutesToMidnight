@@ -15,9 +15,10 @@ using std::ios;
  * Takes the name as a string and the target time as a time struct pointer
  * and uses them to initialize the member variables
  **********************************************************************************/
-Countdown::Countdown(std::string eventName, struct tm* targetTime) {
+Countdown::Countdown(std::string eventName, struct tm targetTime, eventType eType) {
     this->eventName = eventName;
     this->targetTime = targetTime;
+    thisEvent = eType;
 
     time_t now = time(NULL); //get current time and store in temp
     creationTime = localtime_r(&now, &temp[0]); //convert time to a tm* and store in creation time
@@ -29,10 +30,11 @@ Countdown::Countdown(std::string eventName, struct tm* targetTime) {
  * Takes the name as a string, the target time as a long and the creation time
  * as a long and uses them to initialize the member variables
  **********************************************************************************/
-Countdown::Countdown(std::string eventName, long targetTime, long creationTime) {
+Countdown::Countdown(std::string eventName, long targetTime, long creationTime, eventType eType) {
     this->eventName = eventName;
     this->creationTime = localtime_r(&creationTime, &temp[0]);
     this->targetTime = localtime_r(&targetTime, &temp[1]);
+    thisEvent = eType;
 }
 
 /**********************************************************************************
@@ -44,7 +46,8 @@ void Countdown::saveData(){
     outFile.open("data.txt", ios::app); //open file in append mod
 
     //add data for the countdown to the end of the data file
-    outFile << mktime(creationTime) << "|" << eventName << "|" << mktime(targetTime) << std::endl;
+    outFile << mktime(creationTime) << "|" << eventName << "|" << mktime(targetTime)
+            << "|" << thisEvent << std::endl;
     outFile.close();
     //TODO(set the save code to reinitialize save file before saving all the countdowns or
     //     to save the data only if the data does not already exist)
