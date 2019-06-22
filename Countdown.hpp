@@ -23,8 +23,8 @@ private:
     std::string eventName;
     eventType thisEvent;
 public:
-    Countdown(std::string eventName, struct tm targetTime, eventType type);
-    Countdown(std::string eventName, long targetTime, long creationTime);
+    Countdown(std::string eventName, struct tm , eventType type, eventType eType);
+    Countdown(std::string eventName, long targetTime, long creationTime, eventType eType);
     void saveData();
     struct tm* getTargetTime();
     struct tm* getCreationTime();
