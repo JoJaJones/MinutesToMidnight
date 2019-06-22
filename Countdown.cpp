@@ -36,6 +36,19 @@ Countdown::Countdown(std::string eventName, long targetTime, long creationTime, 
 }
 
 /**********************************************************************************
+ * Copy constructor for recreating a countdown object from the data file
+ *
+ * Takes the name as a string, the target time as a long and the creation time
+ * as a long and uses them to initialize the member variables
+ **********************************************************************************/
+Countdown::Countdown(const Countdown &newCountdown) {
+    this->creationTime = newCountdown.creationTime;
+    this->targetTime = newCountdown.targetTime;
+    this->eventName = newCountdown.eventName;
+    this->thisEvent = newCountdown.thisEvent;
+}
+
+/**********************************************************************************
  * Default constructor to allow access to timeCopier functionality if needed
  **********************************************************************************/
 Countdown::Countdown() {}

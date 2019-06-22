@@ -24,6 +24,7 @@ private:
 public:
     Countdown(std::string eventName, struct tm targetTime, eventType eType);
     Countdown(std::string eventName, long targetTime, long creationTime, eventType eType);
+    Countdown(const Countdown &newCountdown);
     Countdown();
     void saveData();
     struct tm* getTargetTime();
