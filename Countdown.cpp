@@ -7,8 +7,6 @@
 
 #include "Countdown.hpp"
 
-using std::ios;
-
 /**********************************************************************************
  * Constructor for initial creation of a countdown object
  *
@@ -17,11 +15,11 @@ using std::ios;
  **********************************************************************************/
 Countdown::Countdown(std::string eventName, struct tm targetTime, eventType eType) {
     this->eventName = eventName;
-    this->targetTime = targetTime;
+    timeCopier(this->targetTime,mktime(&targetTime));
     thisEvent = eType;
 
     time_t now = time(NULL); //get current time and store in temp
-    creationTime = localtime_r(&now, &temp[0]); //convert time to a tm* and store in creation time
+    timeCopier(creationTime, now); //convert time to a tm* and store in creation time
 }
 
 /**********************************************************************************
@@ -32,8 +30,8 @@ Countdown::Countdown(std::string eventName, struct tm targetTime, eventType eTyp
  **********************************************************************************/
 Countdown::Countdown(std::string eventName, long targetTime, long creationTime, eventType eType) {
     this->eventName = eventName;
-    this->creationTime = localtime_r(&creationTime, &temp[0]);
-    this->targetTime = localtime_r(&targetTime, &temp[1]);
+    timeCopier(this->targetTime, targetTime);
+    timeCopier(this->creationTime, creationTime);
     thisEvent = eType;
 }
 
@@ -43,10 +41,10 @@ Countdown::Countdown(std::string eventName, long targetTime, long creationTime, 
 void Countdown::saveData(){
 
     std::ofstream outFile;
-    outFile.open("data.txt", ios::app); //open file in append mod
+    outFile.open("data.txt", std::ios::app); //open file in append mod
 
     //add data for the countdown to the end of the data file
-    outFile << mktime(creationTime) << "|" << eventName << "|" << mktime(targetTime)
+    outFile << mktime(&creationTime) << "|" << eventName << "|" << mktime(&targetTime)
             << "|" << thisEvent << std::endl;
     outFile.close();
     //TODO(set the save code to reinitialize save file before saving all the countdowns or
@@ -54,17 +52,28 @@ void Countdown::saveData(){
 }
 
 void Countdown::timeCopier(struct tm &destination, time_t source) {
-
+    struct tm* temp = localtime(&source);
+    destination.tm_year = temp->tm_year;
+    destination.tm_sec = temp->tm_sec;
+    destination.tm_min = temp->tm_min;
+    destination.tm_hour = temp->tm_hour;
+    destination.tm_mday = temp->tm_mday;
+    destination.tm_mon = temp->tm_mon;
+    destination.tm_gmtoff = temp->tm_gmtoff;
+    destination.tm_isdst = temp->tm_isdst;
+    destination.tm_wday = temp->tm_wday;
+    destination.tm_yday = temp->tm_yday;
+    destination.tm_zone = temp->tm_zone;
 }
 
 
 //accessors below this comment
 struct tm* Countdown::getTargetTime(){
-    return targetTime;
+    return &targetTime;
 }
 
 struct tm* Countdown::getCreationTime(){
-    return creationTime;
+    return &creationTime;
 }
 
 std::string Countdown::getName(){

@@ -17,8 +17,8 @@ enum eventType {GOOD, BAD, NEUTRAL};
 
 class Countdown {
 private:
-    struct tm* creationTime;
-    struct tm* targetTime;
+    struct tm creationTime;
+    struct tm targetTime;
     struct tm temp[2];
     std::string eventName;
     eventType thisEvent;
