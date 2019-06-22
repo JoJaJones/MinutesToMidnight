@@ -41,6 +41,34 @@ void ItemDisplay::displayCountdown(ItemDisplay countdownItem) {
             time[0][i] = time[1][i];
         }
     }
+
+    bool firstData = true;
+    for (int j = 5; j >= 0; --j) {
+
+        if(time[0][j] != 0 || (firstData && j == 0)){
+            if(firstData){
+                firstData = false;
+            } else {
+                std::cout<<" : ";
+            }
+            std::cout<<time[0][j]<<" ";
+            switch (j){
+                case 0: std::cout<<"seconds.";
+                    break;
+                case 1: std::cout<<"minutes";
+                    break;
+                case 2: std::cout<<"hours";
+                    break;
+                case 3: std::cout<<"days";
+                    break;
+                case 4: std::cout<<"months";
+                    break;
+                case 5: std::cout<<"years";
+                    break;
+
+            }
+        }
+    }
 }
 
 void ItemDisplay::calcRemainingTime(int *highVal, int *lowVal) {
