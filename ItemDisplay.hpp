@@ -24,6 +24,7 @@ private:
     int seconds, minutes, hours, days, years;
     void countdownLoop(ItemDisplay watchItem);
     void getCurrentTime();
+    void calcRemainingTime(int *highVal, int *lowVal);
 public:
     ItemDisplay(Countdown thisCountdown);
     void displayCountdown(ItemDisplay countdownItem); //function to create a list view display of remaining time
