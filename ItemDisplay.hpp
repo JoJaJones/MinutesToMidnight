@@ -24,7 +24,7 @@ public:
     ItemDisplay(Countdown thisCountdown);
     void displayCountdown(); //function to create a list view display of remaining time
     void watchCountdown(); //function that uses clearing the screen to create dynamic countdown
-    ~ItemDisplay();
+    void saveData();
 };
 
 

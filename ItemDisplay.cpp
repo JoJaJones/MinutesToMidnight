@@ -29,6 +29,6 @@ double ItemDisplay::calcPercentElapsed() {
     return ((current/target)*100); //return percentage of countdown that has elapsed
 }
 
-ItemDisplay::~ItemDisplay() { //TODO(Weird bug where data is saved to file in reverse order of creation)
+void ItemDisplay::saveData() { //TODO(Weird bug where data is saved to file in reverse order of creation)
     itemCountdown.saveData();
 }
