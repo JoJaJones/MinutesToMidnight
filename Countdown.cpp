@@ -50,6 +50,10 @@ void Countdown::saveData(){
     //     to save the data only if the data does not already exist)
 }
 
+void Countdown::timeCopier(struct tm &destination, time_t source) {
+
+}
+
 
 //accessors below this comment
 struct tm* Countdown::getTargetTime(){

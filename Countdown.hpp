@@ -13,6 +13,7 @@
 #include <fstream>
 #include <time.h>
 
+enum eventType {GOOD, BAD, NEUTRAL};
 
 class Countdown {
 private:
@@ -20,13 +21,15 @@ private:
     struct tm* targetTime;
     struct tm temp[2];
     std::string eventName;
+    eventType thisEvent;
 public:
-    Countdown(std::string eventName, struct tm* targetTime);
+    Countdown(std::string eventName, struct tm targetTime, eventType type);
     Countdown(std::string eventName, long targetTime, long creationTime);
     void saveData();
     struct tm* getTargetTime();
     struct tm* getCreationTime();
     std::string getName();
+    void timeCopier(struct tm &destination, time_t source);
 };
 
 
