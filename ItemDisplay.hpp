@@ -18,7 +18,7 @@
 class ItemDisplay {
 private:
     struct tm tempNow;
-    struct tm* now;
+    struct tm now;
     Countdown itemCountdown;
     std::string eventName;
     int seconds, minutes, hours, days, years;
