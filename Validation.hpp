@@ -9,10 +9,13 @@
 
 #include <iostream>
 #include <string>
+#include "Countdown.hpp"
 
 int getInt(int, int);
+int getInt(std::string);
 bool isInt(std::string);
 bool isWithinRange(int num, int min, int max);
 std::string noSpace(std::string str);
+Countdown processDataString(std::string);
 
 #endif

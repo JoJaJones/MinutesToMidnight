@@ -121,3 +121,21 @@ std::string[] splitString(std::string str) //hey Jason updated this because I'm 
 
 	return newStr;
 }
+
+/**********************************************************************************
+ * Function that takes a string from the data file and processes it into a
+ * Countdown object, which it then returns to the calling function
+ **********************************************************************************/
+Countdown processDataString(std::string dataSet) {
+    std::string dataArray[4] = splitString(dataSet);
+    time_t creationTime, targetTime;
+    eventType eType;
+    std::string eventName;
+
+    creationTime = getInt(dataArray[0]);
+    eventName = dataArray[1];
+    targetTime = getInt(dataArray[2]);
+    eType = getInt(dataArray[3]);
+
+    return Countdown(eventName, targetTime, creationTime, eType);
+}
