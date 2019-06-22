@@ -36,6 +36,11 @@ Countdown::Countdown(std::string eventName, long targetTime, long creationTime, 
 }
 
 /**********************************************************************************
+ * Default constructor to allow access to timeCopier functionality if needed
+ **********************************************************************************/
+Countdown::Countdown() {}
+
+/**********************************************************************************
  * Function to save the data stored in the countdown object to a target save file
  **********************************************************************************/
 void Countdown::saveData(){
@@ -51,6 +56,13 @@ void Countdown::saveData(){
     //     to save the data only if the data does not already exist)
 }
 
+/**********************************************************************************
+ * Function to convert time_t to struct tm due to thread safety issues
+ * inherent in the ctime function localtime
+ *
+ * Takes a target struct tm variable and a time_t time as parameters and uses the
+ * info of the time_t time to fill the struct tm variable
+ **********************************************************************************/
 void Countdown::timeCopier(struct tm &destination, time_t source) {
     struct tm* temp = localtime(&source);
     destination.tm_year = temp->tm_year;

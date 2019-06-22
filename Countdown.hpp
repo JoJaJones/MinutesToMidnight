@@ -11,7 +11,6 @@
 #include <string>
 #include <ctime>
 #include <fstream>
-#include <time.h>
 
 enum eventType {GOOD, BAD, NEUTRAL};
 
@@ -25,6 +24,7 @@ private:
 public:
     Countdown(std::string eventName, struct tm targetTime, eventType eType);
     Countdown(std::string eventName, long targetTime, long creationTime, eventType eType);
+    Countdown();
     void saveData();
     struct tm* getTargetTime();
     struct tm* getCreationTime();
