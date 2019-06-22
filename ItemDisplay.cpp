@@ -139,14 +139,17 @@ void ItemDisplay::watchCountdown(ItemDisplay watchItem) {
         while(watch){
             std::cout<<"\033[2J";
             watchItem.displayCountdown(watchItem);
+            std::cout<<"\t\tPress enter to return to menu."<<std::endl;
             std::this_thread::sleep_until(std::chrono::system_clock::now() + std::chrono::seconds(1));
         }
     }, watchItem);
     t.detach();
 
+    std::cin.clear();
     std::cin.get();
     watch = false;
-    std::this_thread::sleep_until(std::chrono::system_clock::now() + std::chrono::seconds(2));
+    std::this_thread::sleep_until(std::chrono::system_clock::now() + std::chrono::milliseconds(1357));
+    std::cout<<"\033[2J";
     watch = true;
 }
 
