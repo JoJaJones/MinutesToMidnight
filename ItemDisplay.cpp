@@ -69,6 +69,7 @@ void ItemDisplay::displayCountdown(ItemDisplay countdownItem) {
             }
         }
     }
+    std::cout<<std::endl;
 }
 
 void ItemDisplay::calcRemainingTime(int *highVal, int *lowVal) {

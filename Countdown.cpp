@@ -89,6 +89,15 @@ void Countdown::timeCopier(struct tm &destination, time_t source) {
     destination.tm_wday = temp->tm_wday;
     destination.tm_yday = temp->tm_yday;
     destination.tm_zone = temp->tm_zone;
+
+    time_t now = time(NULL);
+    temp = localtime(&now);
+
+    if(destination.tm_isdst == 1 && temp->tm_isdst == 0){
+        destination.tm_hour-=1;
+    } else if(destination.tm_isdst == 0 && temp->tm_isdst == 1) {
+        destination.tm_hour+=1;
+    }
 }
 
 
