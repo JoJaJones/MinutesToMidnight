@@ -6,6 +6,9 @@
 
 #include "Validation.hpp"
 
+
+// NOTE: If input from user is " 1" or "	1" (\t then a number) it doesn't consider it an Integer.
+
 int getInt(int min, int max)
 {
 	int num = -1;
@@ -57,13 +60,27 @@ std::string noSpace(std::string str)
 
 	for (unsigned i = 0; i < str.length(); i++)
 	{
-		if (str[i] != '\t' || str[i] != ' ')
+		if (str[i] != '\t' && str[i] != ' ')
 		{
 			newStr += str[i];
-			i++;
 		}
+		else
+		    return newStr;
+	}
+	return newStr;
+}
 
-		return newStr;
+std::string splitString(std::string str)
+{
+	std::string newStr = "";
+
+	for (unsigned i = 0; i < str.length(); i++)
+	{
+		if (str[i] != '|')
+			newStr += str[i];
+
+		else
+			newStr += " ";
 	}
 	return newStr;
 }
