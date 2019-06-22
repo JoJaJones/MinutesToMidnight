@@ -12,11 +12,11 @@ COMPILER_FLAGS = -std=c++11
 LINKER_FLAGS = 
 
 #EXE_NAME specifies the name of our exectuable
-EXE_NAME =  
+EXE_NAME = MinToMidnight 
 
 #This is the target that compiles our executable
-all : $(ALL_OBJS)
-	$(CC) $(COMPILER_FLAGS) $(LINKER_FLAGS) -o $(EXE_NAME) $(ALL_OBJS)
+all : $(OBJS)
+	$(CC) $(COMPILER_FLAGS) $(LINKER_FLAGS) -o $(EXE_NAME) $(OBJS)
 
 main.o : Menu.hpp
 Countdown.o : Countdown.hpp
