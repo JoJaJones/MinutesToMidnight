@@ -9,7 +9,11 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
+#include <chrono>
+#include <thread>
 #include "Countdown.hpp"
+
+
 
 class ItemDisplay {
 private:
@@ -18,13 +22,15 @@ private:
     Countdown itemCountdown;
     std::string eventName;
     int seconds, minutes, hours, days, years;
-    double calcPercentElapsed();
+    void countdownLoop(ItemDisplay watchItem);
     void getCurrentTime();
 public:
     ItemDisplay(Countdown thisCountdown);
-    void displayCountdown(); //function to create a list view display of remaining time
-    void watchCountdown(); //function that uses clearing the screen to create dynamic countdown
+    void displayCountdown(ItemDisplay countdownItem); //function to create a list view display of remaining time
+    void watchCountdown(ItemDisplay watchItem); //function that uses clearing the screen to create dynamic countdown
     void saveData();
+    int minutesToMidnight();
+    double calcPercentElapsed();
 };
 
 
