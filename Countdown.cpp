@@ -35,6 +35,14 @@ Countdown::Countdown(std::string eventName, long targetTime, long creationTime, 
     thisEvent = eType;
 }
 
+Countdown::Countdown(Countdown &aCountdown) {
+    this->eventName = aCountdown.eventName;
+    this->targetTime = aCountdown.targetTime;
+    this->creationTime = aCountdown.creationTime;
+}
+
+Countdown::Countdown() {}
+
 /**********************************************************************************
  * Default constructor to allow access to timeCopier functionality if needed
  **********************************************************************************/
