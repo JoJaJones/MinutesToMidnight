@@ -156,7 +156,7 @@ void ItemDisplay::getCurrentTime(){
 }
 
 double ItemDisplay::calcPercentElapsed() {
-    getCurrentTime(); //get current time and stor in now
+    getCurrentTime(); //get current time and store in now
 
     double target = static_cast<double>(mktime(itemCountdown.getTargetTime())); //convert target time to seconds in double
     double creation = static_cast<double>(mktime(itemCountdown.getCreationTime())); //convert creationTime to seconds in double
