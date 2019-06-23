@@ -214,8 +214,9 @@ void Menu::countdownsMenu() {
         cout<<topBotStr<<spacer<<"#                    "<<getLogo()<<"                                #\n"<<spacer;
         for (int i = 0; i < countdowns.size(); ++i) {
 
-            if(lineCount%15 == 0 && i != 0){ // change to i%20 if messages gets integrated
-                cout<<"\nPlease press enter to continue.";
+            if(lineCount%15 == 0 && i != 0){
+//                    "#                                                                              #\n";
+                cout<<"#                      Please press enter to continue.                         #\n";
                 cout<<spacer<<topBotStr;
                 cin.get();
                 std::cout<<"\033[2J\033[0;0H";

@@ -37,7 +37,8 @@ int getInt(int min, int max, std::string message)
 		
 		if (!isInt(str) || !isWithinRange(num, min, max) || str.empty())
 		{
-			std::cout << "Please input a number between " << min
+            std::cout<<"\033[2J\033[0;0H";
+		    std::cout << "Please input a number between " << min
 				<< " and " << max << ".\n";
 		}
 	}
