@@ -265,9 +265,25 @@ void Menu::countdownsMenu() {
 }
 
 void Menu::countdownOptions(int index) {
-    std::string message = "What do you want to do with the "+countdowns[index]->getEventName()+" event?"
-                                                                                               "\n1) Delete"
-                                                                                               "\n2) Watch";
+    std::string topBotStr = "################################################################################\n";
+    std::string spacer =    "#                                                                              #\n";
+    std::cout<<"\033[2J\033[0;0H";
+//                        "#                                                                              #\n";
+    std::string message = topBotStr+spacer+ "#                    "+getLogo()+"                                #\n"+spacer+
+                          "#     What do you want to do with the                                          #\n"+
+                          "#     "+countdowns[index]->getEventName();
+    int temp = countdowns[index]->getEventName().length();
+    message+= spacer.substr(6+temp);
+
+    message+=             "#     event?                                                                   #\n"+spacer+
+                          "#     1) Delete                                                                #\n"+
+                          "#     2) Watch                                                                 #\n";
+
+    for (int i = 0; i < 15; ++i) {
+        message+=spacer;
+    }
+    message+= topBotStr;
+
     int choice = getInt(1,2, message);
     switch(choice){
         case 1: countdowns.erase(countdowns.begin()+index);
