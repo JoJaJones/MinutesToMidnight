@@ -209,8 +209,9 @@ void Menu::countdownsMenu() {
     std::string spacer =    "#                                                                              #\n";
     std::cout<<"\033[2J\033[0;0H";
     int choice = 0;
-    int lineCount = 0;
+    int lineCount;
     while(choice >= 0){
+        lineCount = 0;
         cout<<topBotStr<<spacer<<"#                    "<<getLogo()<<"                                #\n"<<spacer;
         for (int i = 0; i < countdowns.size(); ++i) {
 
@@ -251,7 +252,7 @@ void Menu::countdownsMenu() {
             }
         }
 
-        if(lineCount%16 != 0){
+        if(lineCount%16 != 0 || lineCount == 0){
             for (int i = 0; i < (16-(lineCount%16)); ++i) {
                 cout<<spacer;
             }
@@ -288,6 +289,7 @@ void Menu::countdownOptions(int index) {
     int choice = getInt(1,2, message);
     switch(choice){
         case 1: countdowns.erase(countdowns.begin()+index);
+                std::cout<<"\033[2J\033[0;0H";
             break;
         case 2: countdowns[index]->watchCountdown(*countdowns[index]);
     }
