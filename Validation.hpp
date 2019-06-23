@@ -11,11 +11,21 @@
 #include <string>
 #include "Countdown.hpp"
 
-int getInt(int, int);
-int getInt(std::string);
+struct StringCarrier{
+    std::string creationString;
+    std::string targetString;
+    std::string enumString;
+    std::string nameString;
+};
+
+int getInt(int, int, std::string);
+long long getInt(std::string);
 bool isInt(std::string);
 bool isWithinRange(int num, int min, int max);
 std::string noSpace(std::string str);
+std::string sanitizeString(std::string);
+StringCarrier splitString(std::string str);
 Countdown processDataString(std::string);
+
 
 #endif

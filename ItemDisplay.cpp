@@ -10,20 +10,99 @@ const int TWENTY_EIGHT_DAYS = 2419200; //amount of seconds in 28 days used to st
 /**********************************************************************************
  * Constructor for the ItemDisplay class
  *
- * Takes a Countdown object as a parameter and uses it to initialize the member
- * Countdown object
+ * Constructs ItemDisplay from the information in the save file
  **********************************************************************************/
-ItemDisplay::ItemDisplay(Countdown thisCountdown) {
-    itemCountdown = Countdown(thisCountdown);
+ItemDisplay::ItemDisplay(std::string eventName, long targetTime, long creationTime, eventType eType) {
+    itemCountdown = new Countdown(eventName, targetTime, creationTime, eType);
+    countdownMessage = Messages(itemCountdown->getEventType(), 0);
 }
+
+/**********************************************************************************
+ * Constructor for the ItemDisplay class
+ *
+ * Constructs ItemDisplay from the user inputs
+ **********************************************************************************/
+ItemDisplay::ItemDisplay(std::string eventName, struct tm targetTime, eventType eType) {
+    itemCountdown = new Countdown(eventName, targetTime, eType);
+    countdownMessage = Messages(itemCountdown->getEventType(), 0);
+}
+
+/**********************************************************************************
+ * Default constructor to allow access to minutesToMidnight functionality
+ **********************************************************************************/
+ItemDisplay::ItemDisplay() {}
 
 /**********************************************************************************
  * Function to format and display the time remaining in the countdown until the
  * target time
  **********************************************************************************/
+void ItemDisplay::displayCountdown() {
+    getCurrentTime();
+    struct tm* countdownTarget = itemCountdown->getTargetTime();
+    int time[2][6] = {{countdownTarget->tm_sec, countdownTarget->tm_min, countdownTarget->tm_hour,
+                              countdownTarget->tm_mday, countdownTarget->tm_mon, countdownTarget->tm_year},
+                      {now.tm_sec, now.tm_min, now.tm_hour,
+                              now.tm_mday, now.tm_mon, now.tm_year}};
+
+    std::string outString = "";
+    int diff = mktime(countdownTarget)-mktime(&now);
+
+
+    if(diff < TWENTY_EIGHT_DAYS){
+        time[0][0] = diff%60;
+        diff/=60;
+        time[0][1] = diff%60;
+        diff/=60;
+        time[0][2] = diff%24;
+        diff/=24;
+        time[0][3] = diff;
+        time[0][4] = time[0][5] = 0;
+    } else if(diff >= 0) {
+        calcRemainingTime(time[0], time[1]);
+    } else {
+        calcRemainingTime(time[1], time[0]);
+        for (int i = 0; i < 6; ++i) {
+            time[0][i] = time[1][i];
+        }
+    }
+
+    bool firstData = true;
+    for (int j = 5; j >= 0; --j) {
+
+        if(time[0][j] != 0 || (firstData && j == 0)){
+            if(firstData){
+                firstData = false;
+            } else {
+                std::cout<<" : ";
+            }
+            std::cout<<time[0][j]<<" ";
+            switch (j){
+                case 0: std::cout<<"seconds.";
+                    break;
+                case 1: std::cout<<"minutes";
+                    break;
+                case 2: std::cout<<"hours";
+                    break;
+                case 3: std::cout<<"days";
+                    break;
+                case 4: std::cout<<"months";
+                    break;
+                case 5: std::cout<<"years";
+                    break;
+
+            }
+        }
+    }
+    std::cout<<std::endl;
+}
+
+/**********************************************************************************
+ * Function to format and display the time remaining in the countdown until the
+ * target time [Test version]
+ **********************************************************************************/
 void ItemDisplay::displayCountdown(ItemDisplay countdownItem) {
     getCurrentTime();
-    struct tm* countdownTarget = countdownItem.itemCountdown.getTargetTime();
+    struct tm* countdownTarget = countdownItem.itemCountdown->getTargetTime();
     int time[2][6] = {{countdownTarget->tm_sec, countdownTarget->tm_min, countdownTarget->tm_hour,
                      countdownTarget->tm_mday, countdownTarget->tm_mon, countdownTarget->tm_year},
                     {now.tm_sec, now.tm_min, now.tm_hour,
@@ -154,7 +233,7 @@ void ItemDisplay::watchCountdown(ItemDisplay watchItem) {
     std::thread t([](ItemDisplay watchItem) {
 
         while(watch){
-            std::cout<<"\033[2J";
+            std::cout<<"\033[2J\033[0;0H";
             watchItem.displayCountdown(watchItem);
             std::cout<<"\t\tPress enter to return to menu."<<std::endl;
             std::this_thread::sleep_until(std::chrono::system_clock::now() + std::chrono::seconds(1));
@@ -166,7 +245,7 @@ void ItemDisplay::watchCountdown(ItemDisplay watchItem) {
     std::cin.get();
     watch = false;
     std::this_thread::sleep_until(std::chrono::system_clock::now() + std::chrono::milliseconds(1357));
-    std::cout<<"\033[2J";
+    std::cout<<"\033[2J\033[0;0H";
     watch = true;
 }
 
@@ -175,7 +254,7 @@ void ItemDisplay::watchCountdown(ItemDisplay watchItem) {
  **********************************************************************************/
 void ItemDisplay::getCurrentTime(){
     time_t temp = time(NULL);
-    itemCountdown.timeCopier(now, temp);
+    itemCountdown->timeCopier(now, temp);
 }
 
 /**********************************************************************************
@@ -185,8 +264,8 @@ void ItemDisplay::getCurrentTime(){
 double ItemDisplay::calcPercentElapsed() {
     getCurrentTime(); //get current time and store in now
 
-    double target = static_cast<double>(mktime(itemCountdown.getTargetTime())); //convert target time to seconds in double
-    double creation = static_cast<double>(mktime(itemCountdown.getCreationTime())); //convert creationTime to seconds in double
+    double target = static_cast<double>(mktime(itemCountdown->getTargetTime())); //convert target time to seconds in double
+    double creation = static_cast<double>(mktime(itemCountdown->getCreationTime())); //convert creationTime to seconds in double
     double current = static_cast<double>(mktime(&now)); // convert now to seconds in double
 
     current-=creation; //adjust by creation seconds
@@ -216,5 +295,10 @@ int ItemDisplay::minutesToMidnight() {
  * Function to write data contained in the Countdown object to the data file
  **********************************************************************************/
 void ItemDisplay::saveData() {
-    itemCountdown.saveData();
+    itemCountdown->saveData();
+}
+
+//accessors below this comment
+std::string ItemDisplay::getEventName() {
+    return this->itemCountdown->getName();
 }

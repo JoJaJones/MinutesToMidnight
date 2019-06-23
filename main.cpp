@@ -9,5 +9,5 @@
 int main()
 {
 	Menu mainMenu;
-	mainMenu.displayMenu(1);
+	mainMenu.displayMenu();
 }

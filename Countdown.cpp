@@ -5,6 +5,7 @@
  * based on current date and user input date
  **********************************************************************************/
 
+#include <iostream>
 #include "Countdown.hpp"
 
 /**********************************************************************************
@@ -64,6 +65,7 @@ void Countdown::saveData(){
     //add data for the countdown to the end of the data file
     outFile << mktime(&creationTime) << "|" << eventName << "|" << mktime(&targetTime)
             << "|" << thisEvent << std::endl;
+    std::cout<<thisEvent<<std::endl;
     outFile.close();
     //TODO(set the save code to reinitialize save file before saving all the countdowns or
     //     to save the data only if the data does not already exist)
@@ -115,6 +117,6 @@ std::string Countdown::getName(){
 }
     
 eventType Countdown::getEventType(){
-    return eventType;
+    return thisEvent;
     
 }

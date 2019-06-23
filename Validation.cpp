@@ -16,7 +16,7 @@
 				the string is not empty.
 ******************************************************************************/
 
-int getInt(int min, int max)
+int getInt(int min, int max, std::string message)
 {
 	int num = -1;
 	std::string str = "";
@@ -24,6 +24,7 @@ int getInt(int min, int max)
 	{
 		str = "";
 		num = 0;
+		std::cout<<message<<std::endl;
 	    std::getline(std::cin, str);
 		str = noSpace(str);
 		if (isInt(str))
@@ -48,10 +49,10 @@ int getInt(int min, int max)
  * Description: getInt(std::string) process a string from the data file to an
                 integer.
  ******************************************************************************/
-int getInt(std::string stringToProcess) //added this to process strings from the data file
+long long getInt(std::string stringToProcess) //added this to process strings from the data file
 {
 	std::string str = stringToProcess;
-	int num = 0;
+	long long num = 0;
 	    	
 	for (unsigned i = 0; i < str.length(); i++)
 	{
@@ -115,10 +116,11 @@ std::string noSpace(std::string str)
 				data between the '|' symbols and puts it into an array of
 				strings.  The function returns a pointer to the array.
  ******************************************************************************/
-std::string * splitString(std::string str)
+StringCarrier splitString(std::string str)
 {
-	static std::string newStr[4] = {"","","",""};
-	
+	std::string newStr[4] = {"","","",""};
+	StringCarrier newCarrier;
+
 	int delimCount = 0;
 	int count = 0;
 	while(delimCount < 3)
@@ -135,24 +137,59 @@ std::string * splitString(std::string str)
 	}
 	
 	newStr[delimCount] = str[str.length() - 1]; //store enum val
+    newCarrier.creationString = newStr[0];
+    newCarrier.nameString = newStr[1];
+    newCarrier.targetString = newStr[2];
+    newCarrier.enumString = newStr[3];
 
-	return newStr;
+	return newCarrier;
 }
 
 /**********************************************************************************
  * Function that takes a string from the data file and processes it into a
  * Countdown object, which it then returns to the calling function
  **********************************************************************************/
-Countdown processDataString(std::string dataSet) {
-    std::string *dataArray = splitString(dataSet);
-    time_t creationTime, targetTime;
-    eventType eType;
-    std::string eventName;
+//Countdown processDataString(std::string dataSet) {
+//    std::string *dataArray = splitString(dataSet);
+//    time_t creationTime, targetTime;
+//    eventType eType;
+//    std::string eventName;
+//
+//    creationTime = getInt(dataArray[0]);
+//    eventName = dataArray[1];
+//    targetTime = getInt(dataArray[2]);
+//    eType = static_cast<eventType>(getInt(dataArray[3]));
+//    Countdown temp = Countdown(eventName, targetTime, creationTime, eType);
+//    return temp;
+//}
 
-    creationTime = getInt(dataArray[0]);
-    eventName = dataArray[1];
-    targetTime = getInt(dataArray[2]);
-    eType = static_cast<eventType>(getInt(dataArray[3]));
 
-    return Countdown(eventName, targetTime, creationTime, eType);
+std::string sanitizeString(std::string message){
+    std::string stringToSanizize = "";
+
+    while(stringToSanizize.empty()){
+        std::cout<<message<<std::endl;
+        getline(std::cin, stringToSanizize);
+        if(stringToSanizize.empty()){
+            std::cout<<"Invalid entry."<<std::endl;
+        }
+    }
+
+    int indexAdjust = 0;
+    for (int i = 0; i < stringToSanizize.length()+indexAdjust; ++i) {
+        if(stringToSanizize[i+indexAdjust] == '|'){
+            indexAdjust++;
+        }
+
+        if(indexAdjust > 0){
+            stringToSanizize[i] = stringToSanizize[i+indexAdjust];
+        }
+
+    }
+
+    if(indexAdjust>0){
+        stringToSanizize = stringToSanizize.substr(0, stringToSanizize.length()-indexAdjust);
+    }
+
+    return stringToSanizize;
 }
