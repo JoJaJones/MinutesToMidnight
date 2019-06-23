@@ -1,6 +1,6 @@
 #https://www.gnu.org/software/make/manual/html_node/make-Deduces.html
 #OBJS specifies which .o files to create as part of the project
-OBJS = main.o Countdown.o Menu.o
+OBJS = main.o Countdown.o ItemDisplay.o Menu.o Messages.o Validation.o
 
 #CC specifies which compiler we're using
 CC = g++
@@ -12,7 +12,7 @@ COMPILER_FLAGS = -std=c++11
 LINKER_FLAGS = 
 
 #EXE_NAME specifies the name of our exectuable
-EXE_NAME = MinToMidnight 
+EXE_NAME = MinutesToMidnight 
 
 #This is the target that compiles our executable
 all : $(OBJS)
@@ -20,9 +20,10 @@ all : $(OBJS)
 
 main.o : Menu.hpp
 Countdown.o : Countdown.hpp
-Menu.o : Menu.hpp
-
-
+ItemDisplay.o : ItemDisplay.hpp
+Menu.o : Menu.hpp Validation.hpp
+Messages.o : Messages.hpp
+Validation.o : Validation.hpp
 
 .PHONY : clean
 
