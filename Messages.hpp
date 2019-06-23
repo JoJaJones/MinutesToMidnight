@@ -9,17 +9,17 @@
 #define BEAVERHACKSSUMMER19_MESSAGES_HPP
 
 #include "Countdown.hpp"
-#include "ItemDisplay.hpp"
 
 class Messages
 {
 private:
+    double percentComplete;
     eventType type;
-    double percentComplete;    // Update as needed once ItemDisplay is complete.
 public:
     Messages();
     Messages(eventType, double);
-    eventType getEventType();
+    void setPercentComplete(double);
+    void setType(eventType);
     void displayMessage();
 };
 #endif
