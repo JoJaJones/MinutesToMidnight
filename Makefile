@@ -9,7 +9,7 @@ CC = g++
 COMPILER_FLAGS = -std=c++11
 
 #LINKER_FLAGS specifies the libraries we're linking against
-LINKER_FLAGS = -DHAS_TM_GMTOFF=0 
+LINKER_FLAGS =
 
 #EXE_NAME specifies the name of our exectuable
 EXE_NAME = MinutesToMidnight 
