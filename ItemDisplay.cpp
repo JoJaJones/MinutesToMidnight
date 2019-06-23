@@ -36,7 +36,8 @@ ItemDisplay::ItemDisplay() {}
  * Function to format and display the time remaining in the countdown until the
  * target time
  **********************************************************************************/
-void ItemDisplay::displayCountdown() {
+void ItemDisplay::displayCountdown(CountdownString &countdownStr) {
+
     getCurrentTime();
     struct tm* countdownTarget = itemCountdown->getTargetTime();
     int time[2][6] = {{countdownTarget->tm_sec, countdownTarget->tm_min, countdownTarget->tm_hour,
@@ -66,34 +67,39 @@ void ItemDisplay::displayCountdown() {
         }
     }
 
-    bool firstData = true;
+
+    std::string* strPtr[2] = {&countdownStr.firstPart, &countdownStr.secondPart};
+    int count = 0, index = 0;
+    *strPtr[0] = *strPtr[1] = "";
     for (int j = 5; j >= 0; --j) {
 
-        if(time[0][j] != 0 || (firstData && j == 0)){
-            if(firstData){
-                firstData = false;
-            } else {
-                std::cout<<" : ";
+        if(time[0][j] != 0 || (count == 0 && j == 0)){
+            if(count!=0) {
+                *strPtr[index]+=" : ";
             }
-            std::cout<<time[0][j]<<" ";
+
+            if(count==3){
+                index=1;
+            }
+            *strPtr[index]+= std::to_string(time[0][j])+" ";
             switch (j){
-                case 0: std::cout<<"seconds.";
+                case 0: *strPtr[index]+="seconds.";
                     break;
-                case 1: std::cout<<"minutes";
+                case 1: *strPtr[index]+="minutes";
                     break;
-                case 2: std::cout<<"hours";
+                case 2: *strPtr[index]+="hours";
                     break;
-                case 3: std::cout<<"days";
+                case 3: *strPtr[index]+="days";
                     break;
-                case 4: std::cout<<"months";
+                case 4: *strPtr[index]+="months";
                     break;
-                case 5: std::cout<<"years";
+                case 5: *strPtr[index]+="years";
                     break;
 
             }
+            count++;
         }
     }
-    std::cout<<std::endl;
 }
 
 /**********************************************************************************
@@ -104,9 +110,9 @@ void ItemDisplay::displayCountdown(ItemDisplay countdownItem) {
     getCurrentTime();
     struct tm* countdownTarget = countdownItem.itemCountdown->getTargetTime();
     int time[2][6] = {{countdownTarget->tm_sec, countdownTarget->tm_min, countdownTarget->tm_hour,
-                     countdownTarget->tm_mday, countdownTarget->tm_mon, countdownTarget->tm_year},
-                    {now.tm_sec, now.tm_min, now.tm_hour,
-                     now.tm_mday, now.tm_mon, now.tm_year}};
+                              countdownTarget->tm_mday, countdownTarget->tm_mon, countdownTarget->tm_year},
+                      {now.tm_sec, now.tm_min, now.tm_hour,
+                              now.tm_mday, now.tm_mon, now.tm_year}};
 
     std::string outString = "";
     int diff = mktime(countdownTarget)-mktime(&now);

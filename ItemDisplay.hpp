@@ -14,6 +14,10 @@
 #include "Countdown.hpp"
 #include "Messages.hpp"
 
+struct CountdownString {
+    std::string firstPart = "";
+    std::string secondPart = "";
+};
 
 
 class ItemDisplay {
@@ -31,7 +35,8 @@ public:
     ItemDisplay(std::string eventName, struct tm targetTime, eventType eType);
     ItemDisplay(std::string eventName, long targetTime, long creationTime, eventType eType);
     ItemDisplay();
-    void displayCountdown();//function to create a list view display of remaining time
+//    void displayCountdown();//function to create a list view display of remaining time
+    void displayCountdown(CountdownString &countdownStr);
     void displayCountdown(ItemDisplay countdownItem);//test version comment out or delete
     void watchCountdown(ItemDisplay watchItem); //function that uses clearing the screen to create dynamic countdown
     void saveData();

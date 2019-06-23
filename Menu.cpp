@@ -40,36 +40,82 @@ using std::stoi; // string to integer
 
 void Menu::viewMenu(int userNumID)
 {
-	switch (userNumID)
-	{
-	case 1: // Main Menu
-	    cout<<"Minutes to Midnight ("<<utilItemDisplay.minutesToMidnight()<<")"<<
-	          "\n\nPlease make a selection from the following options\n";
-		intMenuChoice = getInt(lowerMenuLimit, upperMenuLimit, strMenuChoices);
-		menuSelect(userNumID, intMenuChoice);
-	}
+    switch (userNumID)
+    {
+        case 1: // Main Menu
+            std::cout<<"\033[2J\033[0;0H";
+            strMenuChoices = "################################################################################\n"
+                             "#                                                                              #\n"
+                             "#                                                                              #\n"
+                             "#                                                                              #\n"
+                             "#                                                                              #\n"
+                             "#                                                                              #\n"
+                             "#                                                                              #\n"
+                             "#                    "+getLogo()+             "                                #\n"
+                                                                            "#                                                                              #\n"
+                                                                            "#            Please make a selection from the following options:               #\n"
+                                                                            "#            1. Create New Countdown                                           #\n"
+                                                                            "#            2. List Current Countdowns                                        #\n"
+                                                                            "#            3. Exit                                                           #\n"
+                                                                            "#                                                                              #\n"
+                                                                            "#                                                                              #\n"
+                                                                            "#                                                                              #\n"
+                                                                            "#                                                                              #\n"
+                                                                            "#                                                                              #\n"
+                                                                            "#                                                                              #\n"
+                                                                            "#                                                                              #\n"
+                                                                            "#                                                                              #\n"
+                                                                            "#                                                                              #\n"
+                                                                            "#                                                                              #\n"
+                                                                            "#                                                                              #\n"
+                                                                            "#                                                                              #\n"
+                                                                            "################################################################################\n";
+
+
+
+            intMenuChoice = getInt(lowerMenuLimit, upperMenuLimit, strMenuChoices);
+            menuSelect(userNumID, intMenuChoice);
+    }
 }
 
+void Menu::displayLogo() {
+    cout<<"Minutes to Midnight ("<<utilItemDisplay.minutesToMidnight()<<")";
+}
+
+std::string Menu::getLogo(){
+    std::string temp = "";
+    int tempInt = utilItemDisplay.minutesToMidnight();
+    temp = "Minutes to Midnight ("+std::to_string(tempInt)+")";
+    if(tempInt < 1000 && tempInt > 99) {
+        temp+=" ";
+    } else if( tempInt < 100 && tempInt > 9) {
+        temp+="  ";
+    } else if(tempInt < 10) {
+        temp+="   ";
+    }
+
+    return temp;
+}
 //working
+
 void Menu::menuSelect(int userNumID, int intMenuChoice)
 {
-	switch (userNumID)
-	{
-	case 1: // Main Menu
-		switch (intMenuChoice)
-		{
-		case 1:
-			createCountdown();
-			break;
-		case 2:
-			countdownsMenu();
-			break;
-		case 3:
-		    menuExit();
-		}
-	}
+    switch (userNumID)
+    {
+        case 1: // Main Menu
+            switch (intMenuChoice)
+            {
+                case 1:
+                    createCountdown();
+                    break;
+                case 2:
+                    countdownsMenu();
+                    break;
+                case 3:
+                    menuExit();
+            }
+    }
 }
-
 
 //working
 void Menu::menuExit() {
@@ -113,7 +159,7 @@ void Menu::createCountdown() {
     int monMin = 1, monMax;
     bool isLeapYear = ((temp.tm_year%4) == 0 &&
                        ((temp.tm_year%100 != 0) ||
-                               temp.tm_year%400 == 0));
+                        temp.tm_year%400 == 0));
 
     switch (temp.tm_mon){
         case 1: monMax = (isLeapYear)? 29 : 28;
@@ -153,26 +199,65 @@ void Menu::createCountdown() {
     }
 
     countdowns.push_back(new ItemDisplay(eventName, temp, eType));//TODO(Deallocate)
+    std::cout<<"\033[2J\033[0;0H";
 }
 
 //working
 void Menu::countdownsMenu() {
-
+    CountdownString countdownStr;
+    std::string topBotStr = "################################################################################\n";
+    std::string spacer =    "#                                                                              #\n";
     std::cout<<"\033[2J\033[0;0H";
     int choice = 0;
+    int lineCount = 0;
     while(choice >= 0){
+        cout<<topBotStr<<spacer<<"#                    "<<getLogo()<<"                                #\n"<<spacer;
         for (int i = 0; i < countdowns.size(); ++i) {
-            if(i%20 == 0 && i != 0){ // change to i%20 if messages gets integrated
+
+            if(lineCount%15 == 0 && i != 0){ // change to i%20 if messages gets integrated
                 cout<<"\nPlease press enter to continue.";
+                cout<<spacer<<topBotStr;
                 cin.get();
                 std::cout<<"\033[2J\033[0;0H";
+                cout<<topBotStr<<spacer;
             }
-            cout<<i+1<<") \""<<countdowns[i]->getEventName()<<"\":: ";
-            countdowns[i]->displayCountdown();
+
+            countdowns[i]->displayCountdown(countdownStr);
+            countdownStr.firstPart = std::to_string(i+1)+") \""+countdowns[i]->getEventName()+"\":: " + countdownStr.firstPart;
+
+            if (!countdownStr.secondPart.empty()) {
+                countdownStr.secondPart = "     "+countdownStr.secondPart;
+            }
+            std::string* cdPtr[] = {&countdownStr.firstPart, &countdownStr.secondPart};
+
+            if(!countdownStr.secondPart.empty()){
+                lineCount+=2;
+            } else {
+                lineCount++;
+            }
+
+            for (int j = 0; j < 2; ++j) {
+
+                for (int k = 0; k < 81; ++k) {
+                    if(!cdPtr[j]->empty()){
+                        if(k<5 || (k >= (cdPtr[j]->length()+5))){
+                            cout<<spacer[k];
+                        } else {
+                            cout<<(*cdPtr[j])[k-5];
+                        }
+                    }
+                }
+            }
         }
 
-        choice = getInt(0, countdowns.size(),"Enter a number of a countdown for additional options or "
-                                             "enter 0 to return\nto main menu. ") - 1;
+        if(lineCount%16 != 0){
+            for (int i = 0; i < (16-(lineCount%16)); ++i) {
+                cout<<spacer;
+            }
+        }
+
+        choice = getInt(0, countdowns.size()-1,spacer+"#  Enter a number of a countdown for additional options or enter 0 to return   #\n"
+                                               "#  to main menu.                                                               #\n"+spacer+topBotStr);
         if(choice>=0){
             countdownOptions(choice);
         }
@@ -181,8 +266,8 @@ void Menu::countdownsMenu() {
 
 void Menu::countdownOptions(int index) {
     std::string message = "What do you want to do with the "+countdowns[index]->getEventName()+" event?"
-                          "\n1) Delete"
-                          "\n2) Watch";
+                                                                                               "\n1) Delete"
+                                                                                               "\n2) Watch";
     int choice = getInt(1,2, message);
     switch(choice){
         case 1: countdowns.erase(countdowns.begin()+index);
@@ -231,27 +316,24 @@ void Menu::loadCountdowns() {
 
 Menu::Menu()
 {
-	keepMenu = true;
-	intMenuChoice = 0;
-	strMenuChoices = "1. Create New Countdown\n"
-                     "2. List Current Countdowns\n"
-                     "3. Exit\n";
-	lowerMenuLimit = 1;
-	upperMenuLimit = 3;
+    keepMenu = true;
+    intMenuChoice = 0;
+    lowerMenuLimit = 1;
+    upperMenuLimit = 3;
 
 
-	utilCountdown = Countdown();
-	utilItemDisplay = ItemDisplay();
+    utilCountdown = Countdown();
+    utilItemDisplay = ItemDisplay();
 
-	loadCountdowns();
+    loadCountdowns();
 }
 
 void Menu::displayMenu()
 {
 
-	while (keepMenu)
-	{
-		viewMenu(1);
-	}
+    while (keepMenu)
+    {
+        viewMenu(1);
+    }
 
 }

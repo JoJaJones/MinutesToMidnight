@@ -34,6 +34,7 @@ class Menu
 		void createCountdown();
 		void loadCountdowns();
 		void countdownOptions(int);
+		void displayLogo();
 
 		// Text Menus
 		void startMenu();
@@ -49,6 +50,7 @@ class Menu
     public:
         Menu();
         void displayMenu();
+        std::string getLogo();
 //        ~Menu();
 };
 
