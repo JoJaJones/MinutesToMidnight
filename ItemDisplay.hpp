@@ -37,7 +37,7 @@ public:
     ItemDisplay();
 //    void displayCountdown();//function to create a list view display of remaining time
     void displayCountdown(CountdownString &countdownStr);
-    void displayCountdown(ItemDisplay countdownItem);//test version comment out or delete
+    void displayCountdown(ItemDisplay countdownItem, CountdownString &countdownStr);//test version comment out or delete
     void watchCountdown(ItemDisplay watchItem); //function that uses clearing the screen to create dynamic countdown
     void saveData();
     int minutesToMidnight();

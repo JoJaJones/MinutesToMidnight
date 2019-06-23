@@ -256,8 +256,8 @@ void Menu::countdownsMenu() {
             }
         }
 
-        choice = getInt(0, countdowns.size()-1,spacer+"#  Enter a number of a countdown for additional options or enter 0 to return   #\n"
-                                               "#  to main menu.                                                               #\n"+spacer+topBotStr);
+        choice = getInt(0, countdowns.size(),spacer+"#  Enter a number of a countdown for additional options or enter 0 to return   #\n"
+                                               "#  to main menu.                                                               #\n"+spacer+topBotStr) - 1;
         if(choice>=0){
             countdownOptions(choice);
         }

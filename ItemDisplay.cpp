@@ -106,7 +106,7 @@ void ItemDisplay::displayCountdown(CountdownString &countdownStr) {
  * Function to format and display the time remaining in the countdown until the
  * target time [Test version]
  **********************************************************************************/
-void ItemDisplay::displayCountdown(ItemDisplay countdownItem) {
+void ItemDisplay::displayCountdown(ItemDisplay countdownItem, CountdownString &countdownStr) {
     getCurrentTime();
     struct tm* countdownTarget = countdownItem.itemCountdown->getTargetTime();
     int time[2][6] = {{countdownTarget->tm_sec, countdownTarget->tm_min, countdownTarget->tm_hour,
@@ -136,34 +136,38 @@ void ItemDisplay::displayCountdown(ItemDisplay countdownItem) {
         }
     }
 
-    bool firstData = true;
+    std::string* strPtr[2] = {&countdownStr.firstPart, &countdownStr.secondPart};
+    int count = 0, index = 0;
+    *strPtr[0] = *strPtr[1] = "";
     for (int j = 5; j >= 0; --j) {
 
-        if(time[0][j] != 0 || (firstData && j == 0)){
-            if(firstData){
-                firstData = false;
-            } else {
-                std::cout<<" : ";
+        if(time[0][j] != 0 || (count == 0 && j == 0)){
+            if(count!=0) {
+                *strPtr[index]+=" : ";
             }
-            std::cout<<time[0][j]<<" ";
+
+            if(count==3){
+                index=1;
+            }
+            *strPtr[index]+= std::to_string(time[0][j])+" ";
             switch (j){
-                case 0: std::cout<<"seconds.";
+                case 0: *strPtr[index]+="seconds.";
                     break;
-                case 1: std::cout<<"minutes";
+                case 1: *strPtr[index]+="minutes";
                     break;
-                case 2: std::cout<<"hours";
+                case 2: *strPtr[index]+="hours";
                     break;
-                case 3: std::cout<<"days";
+                case 3: *strPtr[index]+="days";
                     break;
-                case 4: std::cout<<"months";
+                case 4: *strPtr[index]+="months";
                     break;
-                case 5: std::cout<<"years";
+                case 5: *strPtr[index]+="years";
                     break;
 
             }
+            count++;
         }
     }
-    std::cout<<std::endl;
 }
 
 /**********************************************************************************
@@ -236,12 +240,58 @@ void ItemDisplay::calcRemainingTime(int *highVal, int *lowVal) {
  * Function to creat a dynamic countdown for a specified countdown
  **********************************************************************************/
 void ItemDisplay::watchCountdown(ItemDisplay watchItem) {
-    std::thread t([](ItemDisplay watchItem) {
 
+    std::thread t([](ItemDisplay watchItem) {
+        CountdownString countdownStr;
+        std::string topBotStr = "################################################################################\n";
+        std::string spacer =    "#                                                                              #\n";
         while(watch){
             std::cout<<"\033[2J\033[0;0H";
-            watchItem.displayCountdown(watchItem);
-            std::cout<<"\t\tPress enter to return to menu."<<std::endl;
+
+            std::string temp = "";
+            int tempInt = watchItem.minutesToMidnight();
+            temp = "Minutes to Midnight ("+std::to_string(tempInt)+")";
+            if(tempInt < 1000 && tempInt > 99) {
+                temp+=" ";
+            } else if( tempInt < 100 && tempInt > 9) {
+                temp+="  ";
+            } else if(tempInt < 10) {
+                temp+="   ";
+            }
+            std::string* cdPtr[] = {&countdownStr.firstPart, &countdownStr.secondPart};
+            std::cout<<topBotStr<<spacer<<"#                    "<<temp<<"                                #\n"<<spacer;
+            watchItem.displayCountdown(watchItem, countdownStr);
+
+            countdownStr.firstPart ="\""+watchItem.getEventName()+"\":: " + countdownStr.firstPart;
+
+            if (!countdownStr.secondPart.empty()) {
+                countdownStr.secondPart = "     "+countdownStr.secondPart;
+            }
+
+            for (int i = 0; i < 5; ++i) {
+                std::cout<<spacer;
+            }
+            for (int j = 0; j < 2; ++j) {
+
+                for (int k = 0; k < 81; ++k) {
+                    if(!cdPtr[j]->empty()){
+                        if(k<5 || (k >= (cdPtr[j]->length()+5))){
+                            std::cout<<spacer[k];
+                        } else {
+                            std::cout<<(*cdPtr[j])[k-5];
+                        }
+                    }
+                }
+            }
+            if(cdPtr[1]->empty()){
+                std::cout<<spacer;
+            }
+            for (int l = 0; l < 10; ++l) {
+                std::cout<<spacer;
+            }
+//                     "#                                                                              #\n";
+            std::cout<<spacer<<"#                       Press enter to return to menu.                         #\n"
+                     <<spacer<<topBotStr;
             std::this_thread::sleep_until(std::chrono::system_clock::now() + std::chrono::seconds(1));
         }
     }, watchItem);
