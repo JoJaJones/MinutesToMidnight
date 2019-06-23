@@ -99,6 +99,8 @@ void Menu::createCountdown() {
     std::string message, eventName;
     eventType eType;
 
+    std::cout<<"\033[2J\033[0;0H";
+
     message = "What is the name of the event for this countdown?";
     eventName = sanitizeString(message);
 
@@ -153,16 +155,17 @@ void Menu::createCountdown() {
     countdowns.push_back(new ItemDisplay(eventName, temp, eType));//TODO(Deallocate)
 }
 
-//work in progress
+//working
 void Menu::countdownsMenu() {
 
-
+    std::cout<<"\033[2J\033[0;0H";
     int choice = 0;
     while(choice >= 0){
         for (int i = 0; i < countdowns.size(); ++i) {
             if(i%20 == 0 && i != 0){ // change to i%20 if messages gets integrated
                 cout<<"\nPlease press enter to continue.";
                 cin.get();
+                std::cout<<"\033[2J\033[0;0H";
             }
             cout<<i+1<<") \""<<countdowns[i]->getEventName()<<"\":: ";
             countdowns[i]->displayCountdown();
