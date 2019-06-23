@@ -138,11 +138,11 @@ void Menu::createCountdown() {
     message = "Please enter the second of the desired event.";
     temp.tm_sec = getInt(0,59, message);
 
-    message = "Please select the type of event:"
-              "\n1. Something you're looking forward to"
-              "\n2. Something you're dreading"
-              "\n3. Something you're looking forward to the end of";
-    int tempInt = getInt(1,3, message) - 1;
+//    message = "Please select the type of event:"
+//              "\n1. Something you're looking forward to"
+//              "\n2. Something you're dreading"
+//              "\n3. Something you're looking forward to the end of";
+    int tempInt = 1;
 
     switch(tempInt){
         case 1:eType = GOOD;
