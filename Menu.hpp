@@ -33,6 +33,7 @@ class Menu
 		// Helper Functions
 		void createCountdown();
 		void loadCountdowns();
+		void countdownOptions(int);
 
 		// Text Menus
 		void startMenu();

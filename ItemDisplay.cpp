@@ -13,7 +13,7 @@ const int TWENTY_EIGHT_DAYS = 2419200; //amount of seconds in 28 days used to st
  * Constructs ItemDisplay from the information in the save file
  **********************************************************************************/
 ItemDisplay::ItemDisplay(std::string eventName, long targetTime, long creationTime, eventType eType) {
-    itemCountdown = new Countdown(eventName, targetTime, creationTime, eType);
+    itemCountdown = new Countdown(eventName, targetTime, creationTime, eType); //TODO(Deallocate)
     countdownMessage = Messages(itemCountdown->getEventType(), 0);
 }
 
@@ -23,7 +23,7 @@ ItemDisplay::ItemDisplay(std::string eventName, long targetTime, long creationTi
  * Constructs ItemDisplay from the user inputs
  **********************************************************************************/
 ItemDisplay::ItemDisplay(std::string eventName, struct tm targetTime, eventType eType) {
-    itemCountdown = new Countdown(eventName, targetTime, eType);
+    itemCountdown = new Countdown(eventName, targetTime, eType); //TODO(Deallocate)
     countdownMessage = Messages(itemCountdown->getEventType(), 0);
 }
 

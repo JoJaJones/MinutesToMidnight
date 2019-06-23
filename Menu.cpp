@@ -50,6 +50,7 @@ void Menu::viewMenu(int userNumID)
 	}
 }
 
+//working
 void Menu::menuSelect(int userNumID, int intMenuChoice)
 {
 	switch (userNumID)
@@ -69,6 +70,8 @@ void Menu::menuSelect(int userNumID, int intMenuChoice)
 	}
 }
 
+
+//working
 void Menu::menuExit() {
     // clear save file
     std::ofstream outFile;
@@ -87,6 +90,7 @@ void Menu::menuExit() {
     keepMenu = false;
 }
 
+//working
 void Menu::createCountdown() {
     time_t now = time(NULL);
     struct tm temp;
@@ -146,20 +150,45 @@ void Menu::createCountdown() {
         case 3:eType = NEUTRAL;
     }
 
-    countdowns.push_back(new ItemDisplay(eventName, temp, eType));
+    countdowns.push_back(new ItemDisplay(eventName, temp, eType));//TODO(Deallocate)
 }
 
+//work in progress
 void Menu::countdownsMenu() {
-    for (int i = 0; i < countdowns.size(); ++i) {
-        if(i%20 == 0 && i != 0){ // change to i%20 if messages gets integrated
-            cout<<"\nPlease press enter to continue.";
-            cin.get();
+
+
+    int choice = 0;
+    while(choice >= 0){
+        for (int i = 0; i < countdowns.size(); ++i) {
+            if(i%20 == 0 && i != 0){ // change to i%20 if messages gets integrated
+                cout<<"\nPlease press enter to continue.";
+                cin.get();
+            }
+            cout<<i+1<<") \""<<countdowns[i]->getEventName()<<"\":: ";
+            countdowns[i]->displayCountdown();
         }
-        cout<<i+1<<") \""<<countdowns[i]->getEventName()<<"\":: ";
-        countdowns[i]->displayCountdown();
+
+        choice = getInt(0, countdowns.size(),"Enter a number of a countdown for additional options or "
+                                             "enter 0 to return\nto main menu. ") - 1;
+        if(choice>=0){
+            countdownOptions(choice);
+        }
     }
 }
 
+void Menu::countdownOptions(int index) {
+    std::string message = "What do you want to do with the "+countdowns[index]->getEventName()+" event?"
+                          "\n1) Delete"
+                          "\n2) Watch";
+    int choice = getInt(1,2, message);
+    switch(choice){
+        case 1: countdowns.erase(countdowns.begin()+index);
+            break;
+        case 2: countdowns[index]->watchCountdown(*countdowns[index]);
+    }
+}
+
+//working (FINALLY)
 void Menu::loadCountdowns() {
     std::ifstream inFile;
     StringCarrier temp;
@@ -184,7 +213,7 @@ void Menu::loadCountdowns() {
                             break;
                         case 2: e = NEUTRAL;
                     }
-                    countdowns.push_back(new ItemDisplay(temp.nameString, getInt(temp.targetString), getInt(temp.creationString), e));
+                    countdowns.push_back(new ItemDisplay(temp.nameString, getInt(temp.targetString), getInt(temp.creationString), e)); //TODO(Deallocate)
 
                 }
             }
