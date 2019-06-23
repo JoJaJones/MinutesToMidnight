@@ -30,6 +30,7 @@ public:
     struct tm* getTargetTime();
     struct tm* getCreationTime();
     std::string getName();
+    eventType getEventType();
     void timeCopier(struct tm &destination, time_t source);
 };
 

@@ -113,3 +113,8 @@ struct tm* Countdown::getCreationTime(){
 std::string Countdown::getName(){
     return eventName;
 }
+    
+eventType Countdown::getEventType(){
+    return eventType;
+    
+}

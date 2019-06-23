@@ -5,7 +5,10 @@
  **               on the eventType.
  ***************************************************************************/
 
+#include <iostream>
 #include "Messages.hpp"
+using std::cout;
+using std::endl;
 
 /***************************************************************************
  Description:  Default Constructor for Message Class.
@@ -13,7 +16,7 @@
 
 Messages::Messages()
 {
-    type = "NEUTRAL";
+    type = NEUTRAL;
     percentComplete = 0.0;
 }
 
@@ -30,6 +33,26 @@ Messages::Messages(eventType t, double c)
 
 
 /***************************************************************************
+ Description:  Setter function for the percentComplete member variable.
+ ***************************************************************************/
+
+void Messages::setPercentComplete(double p)
+{
+    percentComplete = p;
+}
+
+
+/***************************************************************************
+ Description:  Setter function for the type member variable.
+ ***************************************************************************/
+
+void Messages::setType(eventType t)
+{
+    type = t;
+}
+
+
+/***************************************************************************
  Description:  Void function that returns a message displaying the percent
  **            complete based on whether the eventType is GOOD, NEUTRAL, or
  **            BAD.
@@ -37,11 +60,11 @@ Messages::Messages(eventType t, double c)
 
 void Messages::displayMessage()
 {
-    if (type == "GOOD")
+    if (type == GOOD)
     {
         cout << "Only " << percentComplete << " time remaining until event!" << endl;
     }
-    elseif (type == "BAD")
+    else if (type == BAD)
     {
         cout << "Your event is " << 1 - percentComplete << " complete!" << endl;
     }

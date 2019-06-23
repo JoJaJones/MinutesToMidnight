@@ -8,6 +8,13 @@
 
 
 // NOTE: If input from user is " 1" or "	1" (\t then a number) it doesn't consider it an Integer.
+/******************************************************************************
+ * Description: getInt(int, int) Takes in min and max range as parameters.
+                The user inputs a string and the function checks if the string
+				contains only numbers before the first white space.  It also
+				checks if the integer is within the specified range and that
+				the string is not empty.
+******************************************************************************/
 
 int getInt(int min, int max)
 {
@@ -37,34 +44,26 @@ int getInt(int min, int max)
 	return num;
 }
 
+/******************************************************************************
+ * Description: getInt(std::string) process a string from the data file to an
+                integer.
+ ******************************************************************************/
 int getInt(std::string stringToProcess) //added this to process strings from the data file
 {
-	int num = -1;
-	std::string str = "";
-	while (!isInt(str) || !isWithinRange(num, min, max) || str.empty())
-	{
-		str = "";
-		num = 0;
+	std::string str = stringToProcess;
+	int num = 0;
 	    	
-		str = stringToProcess;
-		if (isInt(str))
-		{
-			for (unsigned i = 0; i < str.length(); i++)
-			{
-				num = num * 10 + (str[i] - 48);    // 0 = 48 in ascii
-			}
-		}
-		
-		if (!isInt(str) || !isWithinRange(num, min, max) || str.empty())
-		{
-			std::cout << "Please input a number between " << min
-				<< " and " << max << ".\n";
-		}
+	for (unsigned i = 0; i < str.length(); i++)
+	{
+		num = num * 10 + (str[i] - 48);    // 0 = 48 in ascii
 	}
 
 	return num;
 }
 
+/******************************************************************************
+ * Description: isInt(std::string) check that the string contains only numbers
+ ******************************************************************************/
 bool isInt(std::string str)
 {
 	for (unsigned i = 0; i < str.length(); i++)
@@ -75,6 +74,14 @@ bool isInt(std::string str)
 	return true;
 }
 
+/******************************************************************************
+ * Description: isWithinRange(int, int, int) takes in three arguments the number
+                that was converted for user input in the getInt(int, int)
+				function, the minimum number that is valid input, and the
+				maximum number that is valid input.  Returns true if number is
+				within range and false if is not.
+ ******************************************************************************/
+
 bool isWithinRange(int num, int min, int max)
 {
 	if (num < min || num > max)
@@ -82,6 +89,10 @@ bool isWithinRange(int num, int min, int max)
 	return true;
 }
 
+/******************************************************************************
+ * Description: noSpace(std::string) takes a string and returns a new string
+                that returns only the characters before the first white space.
+ ******************************************************************************/
 std::string noSpace(std::string str)
 {
 	std::string newStr;
@@ -98,12 +109,18 @@ std::string noSpace(std::string str)
 	return newStr;
 }
 
-std::string[] splitString(std::string str) //hey Jason updated this because I'm not sure how you'd process subsequent data points as it was written
+/******************************************************************************
+ * Description: splitString(std::string) takes in a string from a text file.
+                The data is delimited with the '|' symbol.  The program takes
+				data between the '|' symbols and puts it into an array of
+				strings.  The function returns a pointer to the array.
+ ******************************************************************************/
+std::string * splitString(std::string str)
 {
-	std::string newStr[4] = {"","","",""};
+	static std::string newStr[4] = {"","","",""};
 	
 	int delimCount = 0;
-	int count = 0
+	int count = 0;
 	while(delimCount < 3)
 	{
 		if (str[count] != '|') 
@@ -117,7 +134,7 @@ std::string[] splitString(std::string str) //hey Jason updated this because I'm 
 		count++;
 	}
 	
-	newStr[delimCount] = str[str.length-1]; //store enum val
+	newStr[delimCount] = str[str.length() - 1]; //store enum val
 
 	return newStr;
 }
@@ -127,7 +144,7 @@ std::string[] splitString(std::string str) //hey Jason updated this because I'm 
  * Countdown object, which it then returns to the calling function
  **********************************************************************************/
 Countdown processDataString(std::string dataSet) {
-    std::string dataArray[4] = splitString(dataSet);
+    std::string *dataArray = splitString(dataSet);
     time_t creationTime, targetTime;
     eventType eType;
     std::string eventName;
@@ -135,7 +152,7 @@ Countdown processDataString(std::string dataSet) {
     creationTime = getInt(dataArray[0]);
     eventName = dataArray[1];
     targetTime = getInt(dataArray[2]);
-    eType = getInt(dataArray[3]);
+    eType = static_cast<eventType>(getInt(dataArray[3]));
 
     return Countdown(eventName, targetTime, creationTime, eType);
 }
