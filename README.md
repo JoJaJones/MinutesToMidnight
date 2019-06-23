@@ -2,6 +2,8 @@
 
 An app that counts down to a date and time specified by the user. An example  would be a countdown till you're off work for the week.
 
+NOTE: Widen the console section of the repl.it for proper UI display
+
 ### The 6 is a Lie - Patricia Booth, Josh Jones, Lindsey Olmstead, Jason Rash
 
 Project for Oregon State University Summer 2019 Beaver Hacks
