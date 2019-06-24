@@ -192,5 +192,9 @@ std::string sanitizeString(std::string message){
         stringToSanizize = stringToSanizize.substr(0, stringToSanizize.length()-indexAdjust);
     }
 
+    if(stringToSanizize.empty() || stringToSanizize[0] == '|'){
+        stringToSanizize = " ";
+    }
+
     return stringToSanizize;
 }
